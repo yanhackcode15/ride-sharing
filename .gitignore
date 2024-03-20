@@ -12,6 +12,32 @@ node_modules/
 /frontend/build/
 /backend/dist/
 
+# Environment Variables - updated to reflect separate frontend and backend .env files
+/frontend/.env
+/frontend/.env.local
+/frontend/.env.development.local
+/frontend/.env.test.local
+/frontend/.env.production.local
+/backend/.env
+/backend/.env.local
+/backend/.env.development
+/backend/.env.test
+/backend/.env.production
+
+# Docker
+*.log
+docker-compose.override.yml
+
+# Operating System and Editor/IDE Files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Build output
+/frontend/build/
+/backend/dist/
+
 # Docker
 *.log
 docker-compose.override.yml

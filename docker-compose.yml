@@ -1,24 +1,34 @@
 version: '3.8'
 services:
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      target: development
+    volumes:
+      - ./frontend/src:/app/src
+      - /app/node_modules
     ports:
-      - "80:80"
-    depends_on:
-      - backend
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    stdin_open: true
+    tty: true
+
   backend:
-    # Backend service configuration goes here
-  mongo:
-    # MongoDB service configuration goes here
-version: '3.8'
-services:
-  frontend:
-    build: ./frontend
+    build:
+      context: ./backend
+      target: development
+    volumes:
+      - ./backend/src:/backend/src
+      - /backend/node_modules
     ports:
-      - "80:80"
-    depends_on:
-      - backend
-  backend:
-    # Backend service configuration goes here
-  mongo:
-    # MongoDB service configuration goes here
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+
+#Dev en
+#Simply run docker-compose up to start your development environment. Docker Compose will use docker-compose.yml by default.
+
+#Production Environment:
+#To start your production environment, you can use both the base file and the production override:
+#docker-compose -f docker-compose.yml -f docker-compose.prod.yml up

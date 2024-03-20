@@ -1,29 +1,44 @@
-# Step 1: Use an official Node base image with a specific version tag
-FROM node:14-alpine as build
+# Base image for both development and production
+FROM node:14-alpine as base
 
-# Step 2: Set the working directory inside the image
+# Set working directory
 WORKDIR /app
 
-# Step 3: Copy package.json and package-lock.json to leverage Docker cache layers
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Step 4: Install dependencies
+# Install dependencies
 RUN npm install
 
-# Step 5: Copy the rest of your app's source code
+# Copy the rest of the application code
 COPY . .
 
-# Step 6: Build your React app
+# Development build stage
+FROM base as development
+# Set environment variable to development
+ENV NODE_ENV=development
+ENV PATH /app/node_modules/.bin:$PATH
+# Expose the port the dev server runs on
+EXPOSE 3000
+# Start the development server
+CMD ["npm", "start"]
+
+# Production build stage
+FROM base as production
+# Set environment variable to production
+ENV NODE_ENV=production
+# Build the app for production
 RUN npm run build
-
-# Step 7: Use a light-weight version of Node
-FROM nginx:alpine
-
-# Step 8: Copy the build output to replace the default nginx contents
-COPY --from=build /app/build /usr/share/nginx/html
-
-# Step 9: Expose port 80 to the outside once the container has launched
+# Serve the production build with a static server
+FROM nginx:alpine as production-serve
+COPY --from=production /app/build /usr/share/nginx/html
+# Expose port 80 for the production server
 EXPOSE 80
+# Nginx serves the static files
+CMD ["nginx", "-g", "daemon off;"]
 
-# Step 10: Define the command to run your app
-# No need to specify CMD because it's inherited from the nginx base image
+#Docker build for dev
+#docker build --target development -t myapp-frontend:dev .
+
+#docker build for prod
+#docker build --target production-serve -t myapp-frontend:prod .
