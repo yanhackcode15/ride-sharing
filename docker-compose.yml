@@ -4,6 +4,7 @@ services:
     build:
       context: ./frontend
       target: development
+      dockerfile: Dockerfile
     volumes:
       - ./frontend/src:/app/src
       - /app/node_modules
@@ -14,18 +15,18 @@ services:
     stdin_open: true
     tty: true
 
-  backend:
+  user-service:
     build:
-      context: ./backend
+      context: ./backend/user-services
+      dockerfile: Dockerfile
       target: development
     volumes:
-      - ./backend/src:/backend/src
-      - /backend/node_modules
+      - ./backend/user-services:/app
+      - /app/node_modules
     ports:
       - "3001:3001"
     environment:
       - NODE_ENV=development
-
 #Dev en
 #Simply run docker-compose up to start your development environment. Docker Compose will use docker-compose.yml by default.
 
