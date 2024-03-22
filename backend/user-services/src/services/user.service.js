@@ -22,7 +22,7 @@ const registerUser = async (userData) => {
       driverLicense: userData.driverLicense,
     };
   }
-
+  console.log('running service layer')
   const newUser = new User(userInfo);
   await newUser.save();
   return newUser;

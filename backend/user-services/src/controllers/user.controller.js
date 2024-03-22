@@ -7,7 +7,10 @@ exports.register = async (req, res) => {
     const newUser = await registerUser(req.body);
     res.status(201).json({ id: newUser._id, email: newUser.email, role: newUser.role });
   } catch (error) {
-    res.status(400).json({message: error});
+    if(error.message == 'Missing vehicle information or driver license information for driver.'){
+      res.status(400).json({message: error.message})
+    }
+    res.status(400).json({message: error.message});
   }
 };
 
