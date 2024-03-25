@@ -10,6 +10,8 @@ exports.register = async (req, res) => {
     if(error.message == 'Missing vehicle information or driver license information for driver.'){
       res.status(400).json({message: error.message})
     }
+
+    
     res.status(400).json({message: error.message});
   }
 };

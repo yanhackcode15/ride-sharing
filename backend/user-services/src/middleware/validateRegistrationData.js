@@ -27,4 +27,4 @@ const validateUserData = (req, res, next) => {
   next();
 };
 
-module.exports = validateUserData;
+module.exports = validateRegistrationData;
