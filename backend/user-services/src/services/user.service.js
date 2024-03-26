@@ -57,6 +57,7 @@ const updateDriverAvailability = async (userId, availability) => {
 };
 
 const findAvailableDriver = async () => {
+  //it'll return null when no driver is found
   const availableDriver = await User.findOne({ driverAvailability: true });
   return availableDriver;
 };
