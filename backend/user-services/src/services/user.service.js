@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const registerUser = async (userData) => {
+  //userdata should contain {user, password, role}, role shuld be string and either 'driver' or 'rider'
   const hashedPassword = await bcrypt.hash(userData.password, 10);
 
   let userInfo = {
@@ -22,13 +23,12 @@ const registerUser = async (userData) => {
       driverLicense: userData.driverLicense,
     };
   }
-  console.log('running service layer')
   const newUser = new User(userInfo);
   await newUser.save();
   return newUser;
 };
 
-const loginUser = async (email, password) => { // Changed from username to email
+const loginUser = async (email, password) => { 
   const user = await User.findOne({ email });
   if (!user) {
     throw new Error('User not found');
