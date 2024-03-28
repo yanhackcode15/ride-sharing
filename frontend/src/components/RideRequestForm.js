@@ -1,28 +1,42 @@
 // src/components/RideRequestForm.js
 import React, { useState } from 'react';
 import axios from 'axios';
+import parseJwt from '../utilities/ParseJWT';
 
 function RideRequestForm() {
-  const [pickup, setPickup] = useState('');
+  const [pickupLocation, setPickupLocation] = useState('');
   const [destination, setDestination] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem('authToken');
-      await axios.post(`${process.env.REACT_APP_TRIP_SERVICE_URL}/rides/request`, {
-        pickup,
-        destination,
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+        const token = localStorage.getItem('authToken');
+        if(!token){
+            throw('Failed to get token')
+        }
+        const decodedToken = parseJwt(token);
+        const rider = decodedToken.userId;
+        const role = decodedToken.role;
+        const pickupCoordinates = {lat: 102, lng: 293};
+        const destinationCoordinates = {lat: 102, lng: 293};
+        const fare = 32; 
+        await axios.post(`${process.env.REACT_APP_TRIP_SERVICE_URL}/rides/`, {
+            rider,
+            pickupLocation,
+            pickupCoordinates,
+            destination,
+            destinationCoordinates,
+            fare
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
       alert('Ride requested successfully!');
       // Optionally reset form or navigate the user to another page
     } catch (error) {
       console.error('Failed to request ride:', error.response.data.message);
-      alert('Failed to request ride.');
+      alert(`Failed to request ride: ${error.message}`);
     }
   };
 
@@ -31,8 +45,8 @@ function RideRequestForm() {
       <input
         type="text"
         placeholder="Pickup Location"
-        value={pickup}
-        onChange={(e) => setPickup(e.target.value)}
+        value={pickupLocation}
+        onChange={(e) => setPickupLocation(e.target.value)}
         required
       />
       <input
