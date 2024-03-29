@@ -1,11 +1,13 @@
 // src/Login.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import axios from 'axios';
+import parseJwt from '../utilities/ParseJWT';
+import { useUser } from '../contexts/userContext';
 
 function Login({updateAuthStatus}) {
     const navigate = useNavigate();
+    const { setRole } = useUser();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -16,10 +18,11 @@ function Login({updateAuthStatus}) {
             email,
             password,
         });
-        // alert('Login successful!');
-        console.log('Token:', response.data.token);
         const { token } = response.data;
         // Store the token in localStorage
+        const decodedToken = parseJwt(token)
+        const role = decodedToken.role;
+        setRole(role);
         localStorage.setItem('authToken', token);
         updateAuthStatus(true)
 

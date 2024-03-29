@@ -4,6 +4,7 @@ import Register from './components/Register';
 import Login from './components/Login';
 import NavBar from './components/NavBar';
 import Dashboard from './components/Dashboard';
+import {UserProvider} from './contexts/userContext';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -20,18 +21,20 @@ function App() {
   };
 
   return (
-    <Router>
-      <NavBar isAuthenticated={isAuthenticated} logout={()=>handleAuthChange(false)} />
-      <Routes>
-        <Route path="/" element={<div>Home Page</div>} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login updateAuthStatus={handleAuthChange}/>} />
-        <Route 
-          path="/dashboard" 
-          element={isAuthenticated ? <Dashboard /> : <Navigate replace to="/login" />} 
-        />
-      </Routes>
-    </Router>
+    <UserProvider>
+      <Router>
+        <NavBar isAuthenticated={isAuthenticated} logout={()=>handleAuthChange(false)} />
+        <Routes>
+          <Route path="/" element={<div>Home Page</div>} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login updateAuthStatus={handleAuthChange}/>} />
+          <Route 
+            path="/dashboard" 
+            element={isAuthenticated ? <Dashboard /> : <Navigate replace to="/login" />} 
+          />
+        </Routes>
+      </Router>
+    </UserProvider>
   );
 }
 

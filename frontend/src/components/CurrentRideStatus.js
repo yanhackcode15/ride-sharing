@@ -2,14 +2,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-function CurrentRideStatus() {
+function CurrentRideStatus({rideId}) {
   const [ride, setRide] = useState(null);
 
   useEffect(() => {
     const fetchCurrentRide = async () => {
       const token = localStorage.getItem('authToken');
+      
       try {
-        const response = await axios.get(`${process.env.REACT_APP_TRIP_SERVICE_URL}/rides/current`, {
+        const response = await axios.get(`${process.env.REACT_APP_TRIP_SERVICE_URL}/rides/${rideId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -22,7 +23,6 @@ function CurrentRideStatus() {
 
     fetchCurrentRide();
   }, []);
-
   if (!ride) {
     return <div>No current ride.</div>;
   }
@@ -30,10 +30,10 @@ function CurrentRideStatus() {
   return (
     <div>
       <h3>Current Ride</h3>
-      <p>Pickup: {ride.pickup}</p>
+      <p>Pickup: {ride.pickupLocation}</p>
       <p>Destination: {ride.destination}</p>
       <p>Status: {ride.status}</p>
-      {/* Display other ride details as needed */}
+      <p>Price: {ride.fare}</p>
     </div>
   );
 }

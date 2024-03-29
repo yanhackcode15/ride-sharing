@@ -59,10 +59,32 @@ async function rateRide(req, res) {
   }
 }
 
+async function getRideInfo(req, res) {
+  try {
+    const { rideId } = req.params;
+    const currentRide = await rideService.getRideInfo(rideId)
+    res.status(200).json(currentRide)
+  } catch (error) {
+    res.status(404).json({ message: error.message })
+  }
+}
+
+async function findAvailableRides(req, res) {
+  try {
+    const availableRides = await rideService.findAvailableRides();
+    res.status(200).json(availableRides);
+  } catch (error) {
+    console.error('Failed to list available rides:', error);
+    res.status(404).json({ message: 'Error fetching available rides' });
+  }
+};
+
 module.exports = {
   createRide,
   matchDriverToRide,
   startRide,
   completeRide,
   rateRide,
+  getRideInfo,
+  findAvailableRides,
 };

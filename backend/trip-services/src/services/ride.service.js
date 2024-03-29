@@ -77,10 +77,33 @@ async function rateRide(rideId, rating) {
   }
 }
 
+async function getRideInfo(rideId) {
+  try {
+    const currentRide = await Ride.findById(rideId); 
+    if (!currentRide) {
+      throw new Error('Ride not found');
+    }
+    return currentRide;
+  } catch (error) {
+    throw new Error(`Failed to get ride info: ${error.message}`);
+  }
+}
+async function findAvailableRides() {
+  try {
+    // Assume 'available' is the status for rides that haven't been accepted by a driver yet
+    const availableRides = await Ride.find({ status: 'requested' });
+    return availableRides;
+  } catch (error) {
+    throw new Error('Failed to fetch available rides');
+  }
+};
+
 module.exports = {
   createRide,
   matchDriverToRide,
   startRide,
   completeRide,
   rateRide,
+  getRideInfo,
+  findAvailableRides,
 };

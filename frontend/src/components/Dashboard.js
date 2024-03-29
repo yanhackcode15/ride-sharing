@@ -2,15 +2,18 @@
 import React from 'react';
 import RideRequestForm from './RideRequestForm';
 import CurrentRideStatus from './CurrentRideStatus';
-// Import RideHistory component
+import axios from 'axios';
+import {useUser} from '../contexts/userContext';
+import RiderDashboard from './RiderDashboard'
+import DriverDashboard from './DriverDashboard'
 
 function Dashboard() {
-  return (
+    // const rideId = localStorage.getItem('latestRideId');
+    const { role } = useUser();
+    return (
     <div>
-      <h2>Welcome, [User's Name]</h2>
-      <RideRequestForm />
-      <CurrentRideStatus />
-      {/* Include RideHistory component */}
+      <h2>Welcome, {role} </h2>
+      { role==='rider' ? <RiderDashboard/> : <DriverDashboard/>}
     </div>
   );
 }

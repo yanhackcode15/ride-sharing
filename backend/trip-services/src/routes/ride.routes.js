@@ -6,8 +6,12 @@ const {
   startRide,
   completeRide,
   rateRide,
+  getRideInfo,
+  findAvailableRides,
 } = require('../controllers/ride.controller');
 
+// Route to show available rides with status requested. Driver will be able to pick rides to accept
+router.get('/available', findAvailableRides);
 
 // Route to create a new ride
 router.post('/', createRide);
@@ -21,7 +25,11 @@ router.patch('/:rideId/start', startRide);
 // Route to complete a ride
 router.patch('/:rideId/complete', completeRide);
 
+//get ride status - new
+router.get('/:rideId', getRideInfo)
+
 // Route to rate a ride
 router.post('/:rideId/rate', rateRide);
+
 
 module.exports = router;
