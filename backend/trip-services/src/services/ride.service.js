@@ -13,10 +13,13 @@ async function createRide(rideData) {
 }
 
 async function matchDriverToRide(rideId) {
+  console.log('matchdriver service')
+  console.log('rideId', rideId)
   try {
     // Find an available driver, the api returns a json string of a driver document
-    const response = await axios.get('http://user-service/users/drivers/available');
-    if(!response.data){
+    const response = await axios.get(`${process.env.USER_SERVICE_URL}/users/drivers/available`);
+    console.log('response.data', response.data)
+    if(!response ||!response.data){
       throw new Error('No available drivers found')
     }
     const availableDriver = response.data
@@ -24,7 +27,7 @@ async function matchDriverToRide(rideId) {
     if (availableDriver) {
       const updatedRide = await Ride.findByIdAndUpdate(
         rideId,
-        { driver: availableDriver._id },
+        { driver: availableDriver._id, status: 'accepted' },
         { new: true }
       );
 

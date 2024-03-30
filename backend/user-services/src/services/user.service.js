@@ -21,10 +21,14 @@ const registerUser = async (userData) => {
       ...userInfo,
       vehicleInfo: userData.vehicleInfo,
       driverLicense: userData.driverLicense,
+      driverAvailability: userData.driverAvailability
     };
+
+    console.log('userinfo service', userInfo)
   }
   const newUser = new User(userInfo);
   await newUser.save();
+  console.log('new user', newUser)
   return newUser;
 };
 
@@ -58,8 +62,16 @@ const updateDriverAvailability = async (userId, availability) => {
 
 const findAvailableDriver = async () => {
   //it'll return null when no driver is found
-  const availableDriver = await User.findOne({ driverAvailability: true });
-  return availableDriver;
-};
+  try {  
+    const availableDriver = await User.findOne({ driverAvailability: true });
+    console.log('available driver returned', availableDriver)
+    if(!availableDriver) {
+      throw new Error ('Driver not found')
+    }
+    return availableDriver;
+  } catch(error) {
+    throw new Error(`Failed to find available drivers: ${error.message}`);
+  }
+}
 
 module.exports = { registerUser, loginUser, updateDriverAvailability, findAvailableDriver };

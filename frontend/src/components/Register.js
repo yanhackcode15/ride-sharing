@@ -15,6 +15,8 @@ function Register() {
     const [licensePlate, setLicensePlate] = useState('');
     const [driversLicenseNumber, setDriversLicenseNumber] = useState('');
     const [validUntil, setValidUntil] = useState('');
+    const [available, setAvailable] = useState(false);
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -25,8 +27,10 @@ function Register() {
             ...(role === 'driver' && {
               vehicleInfo: { make, model, year, licensePlate },
               driverLicense: { licenseNumber: driversLicenseNumber, validUntil },
+              driverAvailability: available,
             }),
         };
+        console.log('form data', formData)
 
         try {
             await axios.post(`${process.env.REACT_APP_USER_SERVICE_URL}/users/register`, formData);
@@ -83,6 +87,16 @@ function Register() {
                 </div>
                 <div>
                     <input type="date" placeholder="License Valid Until" value={validUntil} onChange={(e) => setValidUntil(e.target.value)} required />
+                </div>
+                <div>
+                    <label>
+                        Available for Rides
+                        <input
+                            type="checkbox"
+                            checked={available}
+                            onChange={(e) => setAvailable(e.target.checked)}
+                        />
+                    </label>
                 </div>
                 </>
             )}
