@@ -13,9 +13,12 @@ async function createRide(req, res) {
 
 // Match a driver to a ride
 async function matchDriverToRide(req, res) {
+  const driverId = req.user.userId;
+  console.log('controller driverID', driverId)
+
   try {
     const rideId = req.params.rideId;
-    const updatedRide = await rideService.matchDriverToRide(rideId);
+    const updatedRide = await rideService.matchDriverToRide(rideId, driverId);
     res.status(200).json(updatedRide);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -75,10 +78,29 @@ async function findAvailableRides(req, res) {
     res.status(200).json(availableRides);
   } catch (error) {
     console.error('Failed to list available rides:', error);
-    res.status(404).json({ message: 'Error fetching available rides' });
+    res.status(404).json({ message: error.message });
   }
 };
 
+async function getAcceptedRideByDriver(req, res) {
+  try {
+    const driverId = req.user.userId;
+    console.log('controller driverID', driverId)
+
+    const acceptedRide = await rideService.getAcceptedRideByDriver(driverId)
+    if(acceptedRide==null){
+      return res.status(200).json(null)
+    }
+    if (!acceptedRide) {
+      return res.status(404).json({ message: 'No accepted ride found for this driver.' });
+    }
+
+    res.json(acceptedRide);
+  } catch (error) {
+    console.error('Failed to fetch the accepted ride:', error);
+    res.status(500).json({ message: error.message});
+  }
+}
 module.exports = {
   createRide,
   matchDriverToRide,
@@ -87,4 +109,5 @@ module.exports = {
   rateRide,
   getRideInfo,
   findAvailableRides,
+  getAcceptedRideByDriver,
 };

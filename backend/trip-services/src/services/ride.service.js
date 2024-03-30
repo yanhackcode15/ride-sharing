@@ -12,25 +12,28 @@ async function createRide(rideData) {
   }
 }
 
-async function matchDriverToRide(rideId) {
+async function matchDriverToRide(rideId, driverId) {
   console.log('matchdriver service')
   console.log('rideId', rideId)
   try {
     // Find an available driver, the api returns a json string of a driver document
-    const response = await axios.get(`${process.env.USER_SERVICE_URL}/users/drivers/available`);
+    const response = await axios.get(`${process.env.USER_SERVICE_URL}/users/${driverId}/isAvailable`);
     console.log('response.data', response.data)
     if(!response ||!response.data){
-      throw new Error('No available drivers found')
+      throw new Error('Cannnot find this driver')
     }
     const availableDriver = response.data
+    const availableDriverMongoDbObjectId = new mongoose.Types.ObjectId(availableDriver._id)
+    console.log('availableDriver', availableDriver)
     // If a driver is found, assign the ride to the driver
     if (availableDriver) {
       const updatedRide = await Ride.findByIdAndUpdate(
         rideId,
-        { driver: availableDriver._id, status: 'accepted' },
+        { driver: availableDriverMongoDbObjectId, status: 'accepted' },
         { new: true }
       );
-
+      
+      console.log('updated Ride********', updatedRide)
       if (!updatedRide) {
         throw new Error('Ride not found');
       }
@@ -93,7 +96,7 @@ async function getRideInfo(rideId) {
 }
 async function findAvailableRides() {
   try {
-    // Assume 'available' is the status for rides that haven't been accepted by a driver yet
+    // 'available' is the status for rides that haven't been accepted by a driver yet
     const availableRides = await Ride.find({ status: 'requested' });
     return availableRides;
   } catch (error) {
@@ -101,6 +104,22 @@ async function findAvailableRides() {
   }
 };
 
+async function getAcceptedRideByDriver(driverId) {
+  console.log('get taccepted rides service')
+  const driverObjectId = new mongoose.Types.ObjectId(driverId);
+  console.log('driverId', driverId)
+  console.log('driverObjId', driverObjectId)
+
+  try {
+    const acceptedRide = await Ride.findOne({
+      driver: driverObjectId,
+      status: 'accepted' // Ensure this matches the exact string used in your database
+    });
+    return acceptedRide;
+  } catch(error) {
+    throw new Error('Error fetching accepted ride')
+  }
+}
 module.exports = {
   createRide,
   matchDriverToRide,
@@ -109,4 +128,6 @@ module.exports = {
   rateRide,
   getRideInfo,
   findAvailableRides,
+  getAcceptedRideByDriver,
 };
+

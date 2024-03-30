@@ -4,21 +4,23 @@ import axios from 'axios';
 function DriverDashboard() {
     const [availableRides, setAvailableRides] = useState([]);
     const [acceptedRide, setAcceptedRide] = useState(null);
-
     useEffect(() => {
         const fetchRides = async () => {
             try {
                 const token = localStorage.getItem('authToken');
-                const response = await axios.get(`${process.env.REACT_APP_TRIP_SERVICE_URL}/rides/available`, {
+                const availableRidesResponse = await axios.get(`${process.env.REACT_APP_TRIP_SERVICE_URL}/rides/available`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
-                setAvailableRides(response.data.filter(ride => ride.status === 'requested'));
-                setAcceptedRide(response.data.find(ride => ride.status === 'accepted'));
+                setAvailableRides(availableRidesResponse.data);
+                const acceptedRidesResponse = await axios.get(`${process.env.REACT_APP_TRIP_SERVICE_URL}/rides/acceptedByDriver`, {
+                    headers: { Authorization: `Bearer ${token}`}
+                })
+                console.log('accepted ride from this driver', acceptedRidesResponse.data)
+                setAcceptedRide(acceptedRidesResponse.data);
             } catch (error) {
                 console.error('Error fetching rides:', error);
             }
         };
-
         fetchRides();
     }, []);
 
@@ -58,6 +60,7 @@ function DriverDashboard() {
 
     return (
         <div>
+            <h3>Accepted Ride Info</h3>
             {acceptedRide && (
                 <div>
                     <h3>Accepted Ride</h3>
@@ -74,7 +77,7 @@ function DriverDashboard() {
                     {availableRides.map((ride) => (
                         <li key={ride._id}>
                             {`Pickup: ${ride.pickupLocation}, Destination: ${ride.destination}`}
-                            <button onClick={() => acceptRide(ride._id)}>Accept</button>
+                            <button onClick={() => acceptRide(ride._id)} disabled={!!acceptedRide}>Accept</button>
                         </li>
                     ))}
                 </ul>

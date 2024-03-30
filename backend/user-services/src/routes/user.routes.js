@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { register, login, updateDriverAvailability, getAvailableDriver } = require('../controllers/user.controller');
+const { register, login, updateDriverAvailability, getAvailableDriver, getThisAvaiableDriver } = require('../controllers/user.controller');
 const validateRegistrationData = require('../middleware/validateRegistrationData');
 const validateLoginData = require('../middleware/validateLoginData')
 const validateDriverAvailability = require('../middleware/validateDriverAvailability')
@@ -11,4 +11,5 @@ router.patch('/:id/availability', validateDriverAvailability, updateDriverAvaila
 //{ availability: true }
 router.get('/drivers/available', getAvailableDriver) // this is where trip service will query for a ride
 
+router.get('/:id/isAvailable', getThisAvaiableDriver)
 module.exports = router;

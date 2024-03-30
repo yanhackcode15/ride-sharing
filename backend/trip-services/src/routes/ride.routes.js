@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const requireAuth = require('../middleware/requireAuth')
 const {
   createRide,
   matchDriverToRide,
@@ -8,14 +9,17 @@ const {
   rateRide,
   getRideInfo,
   findAvailableRides,
+  getAcceptedRideByDriver,
 } = require('../controllers/ride.controller');
 
 // Route to show available rides with status requested. Driver will be able to pick rides to accept
 router.get('/available', findAvailableRides);
 
+router.get('/acceptedByDriver', requireAuth, getAcceptedRideByDriver); // `requireAuth` is middleware to ensure the driver is logged in
+
 
 // Route to match a driver to a ride
-router.post('/:rideId/match', matchDriverToRide);
+router.post('/:rideId/match', requireAuth, matchDriverToRide);
 
 // Route to start a ride
 router.patch('/:rideId/start', startRide);

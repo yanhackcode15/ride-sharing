@@ -1,5 +1,5 @@
 
-const { registerUser, loginUser, updateDriverAvailability, findAvailableDriver } = require('../services/user.service');
+const { registerUser, loginUser, updateDriverAvailability, findAvailableDriver, findThisAvailableDriver } = require('../services/user.service');
 
 
 exports.register = async (req, res) => {
@@ -53,3 +53,13 @@ exports.getAvailableDriver = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.getThisAvaiableDriver = async (req, res) => {
+  const driverId = req.params.id;
+  try {
+    const thisAvailableDriver = await findThisAvailableDriver(driverId);
+    return res.status(200).json(thisAvailableDriver);
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+}

@@ -74,4 +74,16 @@ const findAvailableDriver = async () => {
   }
 }
 
-module.exports = { registerUser, loginUser, updateDriverAvailability, findAvailableDriver };
+const findThisAvailableDriver = async (driverId) => {
+  try {
+    const thisAvailableDriver = await User.findByIdAndUpdate(
+      driverId,
+      { driverAvailability: false }
+    )
+    return thisAvailableDriver; 
+  } catch (error) {
+    throw new Error('Failed to find this available driver: ${error.messagse}')
+  }
+}
+
+module.exports = { registerUser, loginUser, updateDriverAvailability, findAvailableDriver, findThisAvailableDriver };
