@@ -13,18 +13,14 @@ async function createRide(rideData) {
 }
 
 async function matchDriverToRide(rideId, driverId) {
-  console.log('matchdriver service')
-  console.log('rideId', rideId)
   try {
     // Find an available driver, the api returns a json string of a driver document
     const response = await axios.get(`${process.env.USER_SERVICE_URL}/users/${driverId}/isAvailable`);
-    console.log('response.data', response.data)
     if(!response ||!response.data){
       throw new Error('Cannnot find this driver')
     }
     const availableDriver = response.data
     const availableDriverMongoDbObjectId = new mongoose.Types.ObjectId(availableDriver._id)
-    console.log('availableDriver', availableDriver)
     // If a driver is found, assign the ride to the driver
     if (availableDriver) {
       const updatedRide = await Ride.findByIdAndUpdate(
@@ -105,10 +101,7 @@ async function findAvailableRides() {
 };
 
 async function getAcceptedRideByDriver(driverId) {
-  console.log('get taccepted rides service')
   const driverObjectId = new mongoose.Types.ObjectId(driverId);
-  console.log('driverId', driverId)
-  console.log('driverObjId', driverObjectId)
 
   try {
     const acceptedRide = await Ride.findOne({
@@ -120,6 +113,51 @@ async function getAcceptedRideByDriver(driverId) {
     throw new Error('Error fetching accepted ride')
   }
 }
+
+async function getStartedRideByDriver(driverId) {
+  const driverObjectId = new mongoose.Types.ObjectId(driverId);
+
+  try {
+    const startedRide = await Ride.findOne({
+      driver: driverObjectId,
+      status: 'in_progress',
+    });
+    return startedRide;
+
+  } catch(error) {
+    throw new Error('Eerror fetching started ride')
+  }
+}
+async function getCurrentForDriver(driverId) {
+  const driverObjectId = new mongoose.Types.ObjectId(driverId);
+
+  try {
+    const currentRide = await Ride.findOne({
+      driver: driverObjectId,
+      $or: [{ status: 'accepted' }, { status: 'in_progress' }]
+    }).sort({ createdAt: -1 }); // Sorting to ensure the most recent ride is returned if there are multiple
+
+    return currentRide;
+
+  } catch(error) {
+    throw new Error('Eerror fetching accepted or started ride')
+  }
+}
+
+async function getCompletedRidesByDriver(driverId) {
+  const driverObjectId = new mongoose.Types.ObjectId(driverId);
+  try {
+    const completedRides = await Ride.find({
+      driver: driverObjectId,
+      status: 'completed', 
+    })
+    console.log('completed rides array', completedRides)
+    return completedRides;
+
+  } catch(error) {
+    throw new Error('Eerror fetching completed rides')
+  }
+}
 module.exports = {
   createRide,
   matchDriverToRide,
@@ -128,6 +166,9 @@ module.exports = {
   rateRide,
   getRideInfo,
   findAvailableRides,
+  getCurrentForDriver,
+  getCompletedRidesByDriver,
   getAcceptedRideByDriver,
+  getStartedRideByDriver
 };
 

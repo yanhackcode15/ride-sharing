@@ -3,7 +3,9 @@ import axios from 'axios';
 
 function DriverDashboard() {
     const [availableRides, setAvailableRides] = useState([]);
-    const [acceptedRide, setAcceptedRide] = useState(null);
+    const [currentRide, setCurrentRide] = useState(null);
+    const [completedRides, setCompletedRides] = useState([]);
+
     useEffect(() => {
         const fetchRides = async () => {
             try {
@@ -12,17 +14,23 @@ function DriverDashboard() {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setAvailableRides(availableRidesResponse.data);
-                const acceptedRidesResponse = await axios.get(`${process.env.REACT_APP_TRIP_SERVICE_URL}/rides/acceptedByDriver`, {
+                const currentRideResponse = await axios.get(`${process.env.REACT_APP_TRIP_SERVICE_URL}/rides/currentForDriver`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                setCurrentRide(currentRideResponse.data); // Set the current ride with its statusv
+                // Fetch completed rides for the driver
+                const completedResponse = await axios.get(`${process.env.REACT_APP_TRIP_SERVICE_URL}/rides/completedByDriver`, {
                     headers: { Authorization: `Bearer ${token}`}
-                })
-                console.log('accepted ride from this driver', acceptedRidesResponse.data)
-                setAcceptedRide(acceptedRidesResponse.data);
+                });
+
+                setCompletedRides(completedResponse.data || []);
+
             } catch (error) {
                 console.error('Error fetching rides:', error);
             }
         };
         fetchRides();
-    }, []);
+    }, [completedRides.length]);
 
     const acceptRide = async (rideId) => {
         try {
@@ -31,7 +39,7 @@ function DriverDashboard() {
                 headers: { Authorization: `Bearer ${token}` },
             });
             // Assuming the backend returns the updated ride details upon acceptance
-            setAcceptedRide(response.data);
+            setCurrentRide(response.data);
             setAvailableRides(currentRides => currentRides.filter(ride => ride._id !== rideId));
         } catch (error) {
             const errorMessage = error.response && error.response.data && error.response.data.message
@@ -49,25 +57,41 @@ function DriverDashboard() {
                 headers: { Authorization: `Bearer ${token}` },
             });
             // Update the local state to reflect the ride has started
-            if (acceptedRide && acceptedRide._id === rideId) {
-                setAcceptedRide({ ...acceptedRide, status: 'in progress' });
+            if (currentRide && currentRide._id === rideId) {
+                setCurrentRide({ ...currentRide, status: 'in_progress' });
             }
         } catch (error) {
             console.error('Error starting the ride:', error);
             alert('Failed to start the ride.');
         }
     };
+    const completeRide = async (rideId) => {
+        try {
+            const token = localStorage.getItem('authToken');
+            await axios.patch(`${process.env.REACT_APP_TRIP_SERVICE_URL}/rides/${rideId}/complete`, {}, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            // Update the local state to reflect the ride has completed
+            if (currentRide && currentRide._id === rideId) {
+                setCurrentRide(null);
+            }
+            
+        } catch (error) {
+            console.error('Error completing the ride:', error);
+            alert('Failed to complete the ride.');
+        }
+    };
 
     return (
         <div>
-            <h3>Accepted Ride Info</h3>
-            {acceptedRide && (
+            {currentRide && (
                 <div>
-                    <h3>Accepted Ride</h3>
-                    <p>Pickup Location: {acceptedRide.pickupLocation}</p>
-                    <p>Destination: {acceptedRide.destination}</p>
-                    <p>Status: {acceptedRide.status}</p>
-                    {acceptedRide.status === 'accepted' && <button onClick={() => startRide(acceptedRide._id)}>Start Ride</button>}
+                    <h3>Ride Status</h3> {/* Updated heading */}
+                    <p>Pickup Location: {currentRide.pickupLocation}</p>
+                    <p>Destination: {currentRide.destination}</p>
+                    <p>Status: {currentRide.status}</p>
+                    {currentRide.status === 'accepted' && <button onClick={() => startRide(currentRide._id)}>Start Ride</button>}
+                    {currentRide.status === 'in_progress' && <button onClick={() => completeRide(currentRide._id)}>Complete Ride</button>}
                 </div>
             )}
 
@@ -77,13 +101,28 @@ function DriverDashboard() {
                     {availableRides.map((ride) => (
                         <li key={ride._id}>
                             {`Pickup: ${ride.pickupLocation}, Destination: ${ride.destination}`}
-                            <button onClick={() => acceptRide(ride._id)} disabled={!!acceptedRide}>Accept</button>
+                            <button onClick={() => acceptRide(ride._id)} disabled={!!currentRide}>Accept</button>
                         </li>
                     ))}
                 </ul>
             ) : (
                 <p>No available rides at the moment.</p>
             )}
+
+            <div>
+                <h3>Completed Rides</h3>
+                {completedRides.length > 0 ? (
+                    completedRides.map((ride) => (
+                        <div key={ride._id}>
+                            <p>Pickup Location: {ride.pickupLocation}</p>
+                            <p>Destination: {ride.destination}</p>
+                            <p>Status: {ride.status}</p>
+                        </div>
+                    ))
+                ) : (
+                    <p>No completed rides.</p>
+                )}
+            </div>
         </div>
     );
 }

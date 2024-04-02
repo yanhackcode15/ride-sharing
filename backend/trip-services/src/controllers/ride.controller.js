@@ -14,7 +14,6 @@ async function createRide(req, res) {
 // Match a driver to a ride
 async function matchDriverToRide(req, res) {
   const driverId = req.user.userId;
-  console.log('controller driverID', driverId)
 
   try {
     const rideId = req.params.rideId;
@@ -101,6 +100,64 @@ async function getAcceptedRideByDriver(req, res) {
     res.status(500).json({ message: error.message});
   }
 }
+
+async function getStartedRideByDriver(req, res) {
+  try {
+    const driverId = req.user.userId;
+
+    const startedRide = await rideService.getStartedRideByDriver(driverId)
+    if(startedRide==null){
+      return res.status(200).json(null)
+    }
+    if (!startedRide) {
+      return res.status(404).json({ message: 'No started ride found for this driver.' });
+    }
+
+    res.json(startedRide);
+  } catch (error) {
+    console.log('Failed to fetch started ride:', error)
+    res.status(500).json({ message: error.message })
+  }
+}
+
+async function getCurrentForDriver(req, res) {
+  try {
+    const driverId = req.user.userId;
+
+    const currentRide = await rideService.getCurrentForDriver(driverId)
+    if(currentRide==null){
+      return res.status(200).json(null)
+    }
+    if (!currentRide) {
+      return res.status(404).json({ message: 'No started or accepted ride found for this driver.' });
+    }
+
+    res.json(currentRide);
+  } catch (error) {
+    console.log('Failed to fetch accepted or started ride:', error)
+    res.status(500).json({ message: error.message })
+  }
+}
+async function getCompletedRidesByDriver(req, res) {
+  try {
+    const driverId = req.user.userId;
+
+    const completedRides = await rideService.getCompletedRidesByDriver(driverId)
+    if(completedRides.length==0){
+      return res.status(200).json(null)
+    }
+    if (!completedRides.length) {
+      return res.status(404).json({ message: 'No completed rides found for this driver.' });
+    }
+
+    res.json(completedRides);
+  } catch (error) {
+    console.log('Failed to fetch completed rides:', error)
+    res.status(500).json({ message: error.message })
+  }
+}
+
+
 module.exports = {
   createRide,
   matchDriverToRide,
@@ -109,5 +166,8 @@ module.exports = {
   rateRide,
   getRideInfo,
   findAvailableRides,
+  getCurrentForDriver,
+  getCompletedRidesByDriver,
   getAcceptedRideByDriver,
+  getStartedRideByDriver,
 };
