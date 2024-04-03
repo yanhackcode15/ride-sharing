@@ -11,6 +11,7 @@ const {
   findAvailableRides,
   getCurrentForDriver,
   getCompletedRidesByDriver,
+  getCompletedRidesForRider,
   getAcceptedRideByDriver,
   getStartedRideByDriver
 } = require('../controllers/ride.controller');
@@ -20,6 +21,7 @@ router.get('/available', findAvailableRides);
 
 
 router.get('/currentForDriver', requireAuth, getCurrentForDriver); // `requireAuth` is middleware to ensure the driver is logged in, this will get ride that eitherr accepted or in_progress
+router.get('/completedForRider', requireAuth, getCompletedRidesForRider);
 
 router.get('/completedByDriver', requireAuth, getCompletedRidesByDriver); // `requireAuth` is middleware to ensure the driver is logged in
 router.get('/acceptedByDriver', requireAuth, getAcceptedRideByDriver); // `requireAuth` is middleware to ensure the driver is logged in

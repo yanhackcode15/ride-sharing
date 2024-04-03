@@ -155,7 +155,21 @@ async function getCompletedRidesByDriver(driverId) {
     return completedRides;
 
   } catch(error) {
-    throw new Error('Eerror fetching completed rides')
+    throw new Error('Eerror fetching completed rides for this driver')
+  }
+}
+async function getCompletedRidesForRider(riderId) {
+  const riderObjectId = new mongoose.Types.ObjectId(riderId);
+  try {
+    const completedRides = await Ride.find({
+      rider: riderObjectId,
+      status: 'completed', 
+    })
+    console.log('completed rides array', completedRides)
+    return completedRides;
+
+  } catch(error) {
+    throw new Error('Eerror fetching completed rides for this rider')
   }
 }
 module.exports = {
@@ -168,6 +182,7 @@ module.exports = {
   findAvailableRides,
   getCurrentForDriver,
   getCompletedRidesByDriver,
+  getCompletedRidesForRider,
   getAcceptedRideByDriver,
   getStartedRideByDriver
 };

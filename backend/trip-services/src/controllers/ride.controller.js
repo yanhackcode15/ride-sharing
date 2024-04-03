@@ -157,6 +157,25 @@ async function getCompletedRidesByDriver(req, res) {
   }
 }
 
+async function getCompletedRidesForRider(req, res) {
+  try {
+    const riderId = req.user.userId;
+
+    const completedRides = await rideService.getCompletedRidesForRider(riderId)
+    if(completedRides.length==0){
+      return res.status(200).json(null)
+    }
+    if (!completedRides.length) {
+      return res.status(404).json({ message: 'No completed rides found for this rider.' });
+    }
+
+    res.json(completedRides);
+  } catch (error) {
+    console.log('Failed to fetch completed rides:', error)
+    res.status(500).json({ message: error.message })
+  }
+}
+
 
 module.exports = {
   createRide,
@@ -168,6 +187,7 @@ module.exports = {
   findAvailableRides,
   getCurrentForDriver,
   getCompletedRidesByDriver,
+  getCompletedRidesForRider,
   getAcceptedRideByDriver,
   getStartedRideByDriver,
 };

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import parseJwt from '../utilities/ParseJWT';
 
-function RideRequestForm() {
+function RideRequestForm({setRideId}) {
     const [pickupLocation, setPickupLocation] = useState('');
     const [destination, setDestination] = useState('');
     const navigate = useNavigate();
@@ -36,7 +36,8 @@ function RideRequestForm() {
             const rideId = response.data._id; 
             alert('Ride requested successfully!');
             localStorage.setItem('latestRideId', rideId)
-            navigate('/dashboard');
+            setRideId(rideId)
+            // navigate('/dashboard');
 
         } catch (error) {
         console.error('Failed to request ride:', error.response.data.message);

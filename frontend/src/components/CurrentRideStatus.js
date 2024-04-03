@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-function CurrentRideStatus({rideId}) {
+function CurrentRideStatus({rideId, setRideCompleted}) {
   const [ride, setRide] = useState(null);
 
   useEffect(() => {
@@ -21,13 +21,23 @@ function CurrentRideStatus({rideId}) {
           },
         });
         setRide(response.data);
+        if(response.data.status=='completed'){
+          setRideCompleted(true)
+        }
       } catch (error) {
         console.error('Failed to fetch current ride:', error.message);
       }
     };
 
     fetchLatestRide();
+    
+    // Set up polling to call the function every 10 seconds
+    const intervalId = setInterval(fetchLatestRide, 3000);
+
+    // Clean up interval on component unmount
+    return () => clearInterval(intervalId);
   }, []);
+
   if (!ride) {
     return <div>No current ride.</div>;
   }
