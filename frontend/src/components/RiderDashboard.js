@@ -6,7 +6,7 @@ import axios from 'axios';
 
 function RiderDashboard() {
   const [rideCompleted, setRideCompleted] = useState(false);
-  const [completedRides, setCompletedRides] = useState([]); // State to store completed rides
+  const [completedRides, setCompletedRides] = useState([]); 
   const [rideId, setRideId] = useState(localStorage.getItem('latestRideId'));
 
   useEffect( () => {
@@ -41,7 +41,7 @@ function RiderDashboard() {
           const response = await axios.get(`${process.env.REACT_APP_TRIP_SERVICE_URL}/rides/completedForRider`, {
               headers: { Authorization: `Bearer ${token}` },
           });
-          setCompletedRides(response.data); // Assuming the endpoint returns an array of completed rides
+          setCompletedRides(response.data==null? []:response.data); // Assuming the endpoint returns an array of completed rides
       } catch (error) {
           console.error('Failed to fetch completed rides:', error);
       }

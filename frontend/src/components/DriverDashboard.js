@@ -91,7 +91,7 @@ function DriverDashboard() {
                         <p>Pickup Location: {currentRide.pickupLocation}</p>
                         <p>Destination: {currentRide.destination}</p>
                         <p>Status: {currentRide.status}</p>
-                        {currentRide.status === 'accepted' && <button onClick={() => startRide(currentRide._id)}>Start Ride</button>}
+                        {currentRide.status === 'accepted' && <button className="start-complete-ride-button button-primary" onClick={() => startRide(currentRide._id)}>Start Ride</button>}
                         {currentRide.status === 'in_progress' && <button 
                             className="start-complete-ride-button button-primary"
                             onClick={() => completeRide(currentRide._id)}>
@@ -102,7 +102,7 @@ function DriverDashboard() {
             )}
 
             <h2>Available Rides</h2>
-            {availableRides.length ? (
+            {(availableRides.length) ? (
                 <ul>
                     {availableRides.map((ride) => (
                         <li className="available-ride-card" key={ride._id}>
@@ -122,7 +122,7 @@ function DriverDashboard() {
 
             <div>
                 <h3>Completed Rides</h3>
-                {completedRides.length > 0 ? (
+                {(completedRides.length) > 0 ? (
                     completedRides.map((ride) => (
                         <div className="completed-ride-card" key={ride._id}>
                             <p>Pickup Location: {ride.pickupLocation}</p>
