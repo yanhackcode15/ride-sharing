@@ -1,0 +1,17 @@
+.auth-actions {
+  text-align: center;
+  padding: 40px 20px;
+  background: #f9f9f9; /* Light background to make the section stand out */
+}
+
+.auth-actions h2 {
+  margin-bottom: 20px;
+}
+
+.auth-actions p {
+  margin-bottom: 30px;
+}
+
+.auth-buttons .button {
+    margin: 0 10px; 
+}

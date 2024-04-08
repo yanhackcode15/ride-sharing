@@ -1,12 +1,44 @@
-/* src/components/NavBar.css */
-nav ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-nav ul li {
-display: inline;
-margin-right: 10px;
+.app-header {
+  background-color: #fff; /* Light background */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+  padding: 5px 10px;
 }
-  
-  
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0; 
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+.navbar ul .nav-links {
+  display: flex;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: var(--primary-color); /* Deep Sky Blue or another primary color */
+  margin-right: 20px;
+  font-weight: 500;
+}
+.brand {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--primary-color);
+  display: flex; 
+  align-items: center;
+}
+.brand-logo {
+  height: 60px; 
+  width: auto; 
+  margin: 0;
+}

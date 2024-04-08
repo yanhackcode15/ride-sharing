@@ -1,0 +1,105 @@
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background-color: #f9f9f9; /* Light background to keep it clean */
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Soft shadow for depth */
+}
+
+h2, h3 {
+    margin: 20px 20px;
+    color: #333; /* Dark gray for headings */
+}
+
+p, li {
+    color: #666; /* Lighter gray for text, improves readability */
+}
+
+ul {
+    list-style-type: none; /* Removes bullet points */
+    padding: 0;
+}
+
+.completed-ride-card {
+    background-color: white; /* White background for list items */
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+}
+.current-ride-card {
+    background-color: white; /* White background for list items */
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+}
+.available-ride-card {
+    background-color: white; /* White background for list items */
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+}
+
+.default-no-ride-text {
+    background-color: white; /* White background for list items */
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.driver-ride-status-card {
+    background-color: white; /* White background for list items */
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.request-ride-button {
+    margin-top: 10px; 
+}
+.accept-ride-button {
+    margin-left: 20px; 
+}
+.start-complete-ride-button {
+    margin-top: 10px; 
+}
+button:disabled {
+    background-color: #ccc; /* Gray out when disabled */
+}
+
+form {
+    background-color: #fff; /* Consistent with list items */
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+input[type="text"], input[type="date"], select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Adjusting form inputs focus style */
+input[type="text"]:focus, input[type="date"]:focus, select:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    form, ul, li {
+        padding: 10px;
+    }
+}

@@ -61,7 +61,7 @@ function RideRequestForm({setRideId}) {
             onChange={(e) => setDestination(e.target.value)}
             required
         />
-        <button type="submit">Request Ride</button>
+        <button className="request-ride-button button-primary" type="submit">Request Ride</button>
         </form>
     );
 }

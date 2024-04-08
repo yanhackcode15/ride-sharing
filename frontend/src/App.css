@@ -1,38 +1,110 @@
-.App {
+:root {
+  --primary-color: #00bfff;
+  --secondary-color: #ffffff;
+  --background-color: #f8f9fa;
+  --text-color: #333333;
+  --success-color: #50c878;
+  --error-color: #b22222;
+  --font-stack: 'Open Sans', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  border: none;
+  box-sizing: border-box;
+  text-decoration: none; /* remove underline in a link or inside a button*/
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-stack);
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Roboto', sans-serif;
+}
+
+.button-primary {
+  background-color: var(--primary-color);
+  color: #ffffff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  filter: brightness(100%);
+}
+
+/* Form Inputs */
+.form-input {
+  border: 1px solid #cccccc;
+  background-color: #ffffff;
+  padding: 10px 15px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+  width: 100%; /* Ensures form inputs stretch to the full width of their container */
+  box-sizing: border-box; 
+}
+
+.form-input:focus {
+  border-color: var(--primary-color);
+  outline: none; /* Removes the default focus outline and replaces it with a border color change */
+}
+
+/* Secondary Buttons */
+.button-secondary {
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  padding: 12px 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  filter: brightness(100%);
+}
+
+.button-primary:hover, .button-secondary:hover {
+  filter: brightness(80%);
+}
+
+/* Alerts/Notifications */
+.alert-success {
+  background-color: var(--success-color);
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.alert-error {
+  background-color: var(--error-color);
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+/* Additional utility classes for margin and padding */
+.mt-1 { margin-top: 8px; }
+.mb-1 { margin-bottom: 8px; }
+.pt-1 { padding-top: 8px; }
+.pb-1 { padding-bottom: 8px; }
+/* Add more as needed, following the pattern for different sides and sizes */
+.container {
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 1200px; /* Max width for large screens, centers content with auto margins */
+}
+
+.header {
+  background: var(--primary-color);
+  color: #ffffff;
+  padding: 20px 0;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+/* .button {
+  margin: 0 15px; 
+} */

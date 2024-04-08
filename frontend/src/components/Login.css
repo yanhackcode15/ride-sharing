@@ -1,0 +1,53 @@
+.login-form {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background: white;
+}
+
+.login-title {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+form div {
+    margin-bottom: 1rem;
+}
+
+.login-input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.login-submit {
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .login-form {
+        padding: 1rem;
+        margin: 10 auto; /* Center the form in the viewport */
+    }
+
+    .login-title {
+        font-size: 1.5rem; /* Reduce font size for smaller screens */
+    }
+
+    .login-input, .login-submit {
+        font-size: 1rem; /* Adjust font size for readability on smaller devices */
+        padding: 12px; /* Adjust padding for better touch target size */
+    }
+
+    /* Adjust button styling for mobile */
+    .login-submit {
+        padding: 12px;
+        font-size: 1.1rem; /* Make the button text slightly larger */
+    }
+}

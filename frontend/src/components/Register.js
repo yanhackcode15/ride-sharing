@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
+import './Register.css';
 
 function Register() {
     const navigate = useNavigate();
@@ -42,10 +43,10 @@ function Register() {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <h2>Register</h2>
-            <div>
-                <input
+        <form className="register-form" onSubmit={handleSubmit}>
+            <h2 className="register-title">Register</h2>
+            <div className="register-input-container">
+                <input className="register-input"
                 type="email"
                 placeholder="Email"
                 value={email}
@@ -55,6 +56,7 @@ function Register() {
             </div>
             <div>
                 <input
+                className="register-input"
                 type="password"
                 placeholder="Password"
                 value={password}
@@ -63,7 +65,7 @@ function Register() {
                 />
             </div>
             <div>
-                <select value={role} onChange={(e) => setRole(e.target.value)} required>
+                <select className="register-input" value={role} onChange={(e) => setRole(e.target.value)} required>
                 <option value="rider">Rider</option>
                 <option value="driver">Driver</option>
                 </select>
@@ -71,27 +73,56 @@ function Register() {
             {role === 'driver' && (
                 <>
                 <div>
-                    <input type="text" placeholder="Vehicle Make" value={make} onChange={(e) => setMake(e.target.value)} required />
+                    <input
+                        className="register-input" 
+                        type="text"
+                        placeholder="Vehicle Make"
+                        value={make}
+                        onChange={(e) => setMake(e.target.value)} 
+                        required />
                 </div>
                 <div>
-                    <input type="text" placeholder="Vehicle Model" value={model} onChange={(e) => setModel(e.target.value)} required />
+                    <input
+                        className="register-input"
+                        type="text" placeholder="Vehicle Model"
+                        value={model} 
+                        onChange={(e) => setModel(e.target.value)}
+                        required />
                 </div>
                 <div>
-                    <input type="number" placeholder="Vehicle Year" value={year} onChange={(e) => setYear(e.target.value)} required />
+                    <input 
+                        className="register-input"
+                        type="number" placeholder="Vehicle Year"
+                        value={year} 
+                        onChange={(e) => setYear(e.target.value)} 
+                        required />
                 </div>
                 <div>
-                    <input type="text" placeholder="License Plate" value={licensePlate} onChange={(e) => setLicensePlate(e.target.value)} required />
+                    <input 
+                        className="register-input" 
+                        type="text" placeholder="License Plate" 
+                        value={licensePlate}
+                        onChange={(e) => setLicensePlate(e.target.value)}
+                        required />
                 </div>
                 <div>
-                    <input type="text" placeholder="Driver's License Number" value={driversLicenseNumber} onChange={(e) => setDriversLicenseNumber(e.target.value)} required />
+                    <input 
+                        className="register-input" type="text" placeholder="Driver's License Number" value={driversLicenseNumber} onChange={(e) => setDriversLicenseNumber(e.target.value)} 
+                        required />
                 </div>
                 <div>
-                    <input type="date" placeholder="License Valid Until" value={validUntil} onChange={(e) => setValidUntil(e.target.value)} required />
+                    <input 
+                        className="register-input" 
+                        type="date" placeholder="License Valid Until" 
+                        value={validUntil}
+                        onChange={(e) => setValidUntil(e.target.value)} 
+                        required />
                 </div>
                 <div>
                     <label>
                         Available for Rides
                         <input
+                            className="register-checkbox" 
                             type="checkbox"
                             checked={available}
                             onChange={(e) => setAvailable(e.target.checked)}
@@ -100,7 +131,7 @@ function Register() {
                 </div>
                 </>
             )}
-            <button type="submit">Register</button>
+            <button className="register-submit button-primary" type="submit">Register</button>
         </form>
     );
 }

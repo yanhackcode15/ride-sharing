@@ -86,12 +86,18 @@ function DriverDashboard() {
         <div>
             {currentRide && (
                 <div>
-                    <h3>Ride Status</h3> {/* Updated heading */}
-                    <p>Pickup Location: {currentRide.pickupLocation}</p>
-                    <p>Destination: {currentRide.destination}</p>
-                    <p>Status: {currentRide.status}</p>
-                    {currentRide.status === 'accepted' && <button onClick={() => startRide(currentRide._id)}>Start Ride</button>}
-                    {currentRide.status === 'in_progress' && <button onClick={() => completeRide(currentRide._id)}>Complete Ride</button>}
+                    <h3>Ride Status</h3> 
+                    <div className="driver-ride-status-card">
+                        <p>Pickup Location: {currentRide.pickupLocation}</p>
+                        <p>Destination: {currentRide.destination}</p>
+                        <p>Status: {currentRide.status}</p>
+                        {currentRide.status === 'accepted' && <button onClick={() => startRide(currentRide._id)}>Start Ride</button>}
+                        {currentRide.status === 'in_progress' && <button 
+                            className="start-complete-ride-button button-primary"
+                            onClick={() => completeRide(currentRide._id)}>
+                                Complete Ride
+                        </button>}
+                    </div>
                 </div>
             )}
 
@@ -99,28 +105,33 @@ function DriverDashboard() {
             {availableRides.length ? (
                 <ul>
                     {availableRides.map((ride) => (
-                        <li key={ride._id}>
+                        <li className="available-ride-card" key={ride._id}>
                             {`Pickup: ${ride.pickupLocation}, Destination: ${ride.destination}`}
-                            <button onClick={() => acceptRide(ride._id)} disabled={!!currentRide}>Accept</button>
+                            <button 
+                                className="accept-ride-button button-primary"
+                                onClick={() => acceptRide(ride._id)} 
+                                disabled={!!currentRide}>
+                                    Accept
+                            </button>
                         </li>
                     ))}
                 </ul>
             ) : (
-                <p>No available rides at the moment.</p>
+                <div className="default-no-ride-text"><p>No available rides at the moment.</p></div>
             )}
 
             <div>
                 <h3>Completed Rides</h3>
                 {completedRides.length > 0 ? (
                     completedRides.map((ride) => (
-                        <div key={ride._id}>
+                        <div className="completed-ride-card" key={ride._id}>
                             <p>Pickup Location: {ride.pickupLocation}</p>
                             <p>Destination: {ride.destination}</p>
                             <p>Status: {ride.status}</p>
                         </div>
                     ))
                 ) : (
-                    <p>No completed rides.</p>
+                    <div className="default-no-ride-text"><p>No completed rides.</p></div>
                 )}
             </div>
         </div>

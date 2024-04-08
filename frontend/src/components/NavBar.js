@@ -2,28 +2,28 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './NavBar.css';
-
+import logo from '../assets/images/logo_light.png'
 
 function NavBar({isAuthenticated, logout}) {
     
   return (
-    <nav>
-      <ul>
+    <header className="app-header">
+      <nav className="navbar">
+        <Link className="brand" to="/"><img src={logo} alt="Logo" className="brand-logo"/>Ridely</Link>
         {isAuthenticated ? (
-            <>
+            <div className='nav-links'>
+              <ul>
                 <li><Link to="/dashboard">Dashboard</Link></li>
                 <li><Link to="/profile">Profile</Link></li>
-                <li><button onClick={() => logout()}>Logout</button></li>
-            </>
+                <li><button className="button-secondary" onClick={() => logout()}>Logout</button></li>
+              </ul>
+            </div>
             ) : (
-            <>
-                <li><Link to="/">Home</Link></li>
-                <li><Link to="/login">Login</Link></li>
-                <li><Link to="/register">Register</Link></li>
-            </>
+            <div className='nav-links'>
+            </div>
         )}
-      </ul>
-    </nav>
+      </nav>
+    </header>
   );
 }
 

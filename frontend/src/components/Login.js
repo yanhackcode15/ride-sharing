@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import parseJwt from '../utilities/ParseJWT';
 import { useUser } from '../contexts/userContext';
+import './Login.css';
 
 function Login({updateAuthStatus}) {
     const navigate = useNavigate();
@@ -36,31 +37,33 @@ function Login({updateAuthStatus}) {
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <h2>Login</h2>
-      <div>
+    <form className="login-form" onSubmit={handleLogin}>
+      <h2 className="login-title">Login</h2>
+      <div className="login-input-container">
         <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            autoComplete="email"
-            required
+          className="login-input"
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          autoComplete="email"
+          required
         />
       </div>
       <div>
         <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            autoComplete="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
+          className="login-input"
+          type="password"
+          name="password"
+          placeholder="Password"
+          autoComplete="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
         />
       </div>
-      <button type="submit">Login</button>
+      <button className="login-submit button-primary" type="submit">Login</button>
     </form>
   );
 }

@@ -58,15 +58,18 @@ function RiderDashboard() {
           {completedRides.length > 0 ? (
               <ul>
                   {completedRides.map((ride) => (
-                      <li key={ride._id}>
+                      <li 
+                        className="completed-ride-card" 
+                        key={ride._id}>
                           <p>Pickup: {ride.pickupLocation} - Destination: {ride.destination}</p>
                           <p>Date: {new Date(ride.createdAt).toLocaleDateString()} - Price: ${ride.fare}</p>
                           <p>Status: {ride.status}</p>
                       </li>
                   ))}
               </ul>
-          ) : (
-              <p>You have no completed rides.</p>
+          ) : (<div className="default-no-ride-text">
+                <p>You have no completed rides.</p>
+                </div>
           )}
       </div>
     </div>

@@ -45,10 +45,12 @@ function CurrentRideStatus({rideId, setRideCompleted}) {
   return (
     <div>
       <h3>Current Ride</h3>
-      <p>Pickup: {ride.pickupLocation}</p>
-      <p>Destination: {ride.destination}</p>
-      <p>Status: {ride.status}</p>
-      <p>Price: {ride.fare}</p>
+      <div className="current-ride-card">
+        <p>Pickup: {ride.pickupLocation}</p>
+        <p>Destination: {ride.destination}</p>
+        <p>Status: {ride.status}</p>
+        <p>Price: {ride.fare}</p>
+      </div>
     </div>
   );
 }
