@@ -30,7 +30,7 @@ function DriverDashboard() {
             }
         };
         fetchRides();
-    }, [completedRides.length]);
+    }, [completedRides.length, currentRide]);
 
     const acceptRide = async (rideId) => {
         try {

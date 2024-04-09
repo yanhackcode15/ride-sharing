@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  frontend:
+    build:
+      context: ./frontend
+      target: production
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend/src:/app/src
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    stdin_open: true
+    tty: true
+
+  user-service:
+    build:
+      context: ./backend/user-services
+      dockerfile: Dockerfile
+      target: production
+    volumes:
+      - ./backend/user-services:/app
+      - /app/node_modules
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+#Dev en
+#Simply run docker-compose up to start your development environment. Docker Compose will use docker-compose.yml by default.
+
+#Production Environment:
+#To start your production environment, you can use both the base file and the production override:
+#docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
