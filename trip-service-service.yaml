@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.prod.yml
+    kompose.version: 1.32.0 (765fde254)
+  labels:
+    io.kompose.service: trip-service
+  name: trip-service
+spec:
+  type: LoadBalancer
+  ports:
+    - name: "3002"
+      port: 3002
+      targetPort: 3002
+  selector:
+    io.kompose.service: trip-service

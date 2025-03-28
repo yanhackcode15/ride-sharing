@@ -5,28 +5,36 @@ services:
       context: ./frontend
       target: production
       dockerfile: Dockerfile
-    volumes:
-      - ./frontend/src:/app/src
-      - /app/node_modules
     ports:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-    stdin_open: true
-    tty: true
 
   user-service:
     build:
       context: ./backend/user-services
       dockerfile: Dockerfile
       target: production
-    volumes:
-      - ./backend/user-services:/app
-      - /app/node_modules
     ports:
       - "3001:3001"
     environment:
       - NODE_ENV=production
+      - DB_CONNECTION=mongodb://mongodb/userService
+  trip-service:
+    build:
+      context: ./backend/trip-services
+      dockerfile: Dockerfile
+      target: production
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=production
+      - DB_CONNECTION=mongodb://mongodb/tripService
+      - USER_SERVICE_URL=http://user-service:3001
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
 #Dev en
 #Simply run docker-compose up to start your development environment. Docker Compose will use docker-compose.yml by default.
 

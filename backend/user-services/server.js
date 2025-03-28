@@ -8,10 +8,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const result = dotenv.config();
-if (result.error) {
-  console.error('Error loading environment variables:', result.error);
-  process.exit(1); // Exit process on environment variable loading failure
+if(process.env.NODE_ENV === 'development'||process.env.NODE_ENV === 'test') {
+  const result = dotenv.config();
+  if (result.error) {
+    console.error('Error loading environment variables:', result.error);
+    process.exit(1); // Exit process on environment variable loading failure
+  }
 }
 
 mongoose.connect(process.env.DB_CONNECTION)

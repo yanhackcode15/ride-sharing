@@ -1,0 +1,26 @@
+# Node modules
+node_modules
+
+# Build output
+build
+
+# Source maps
+*.map
+
+# Environment files
+.env*
+!.env.production
+
+# Development specific files
+README.md
+.git
+.gitignore
+Dockerfile
+.dockerignore
+*.md
+*.log
+*.DS_Store
+.npmrc
+.yarnrc
+.vscode
+.idea

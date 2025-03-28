@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.prod.yml
+    kompose.version: 1.32.0 (765fde254)
+  labels:
+    io.kompose.service: user-service
+  name: user-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: user-service
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.prod.yml
+        kompose.version: 1.32.0 (765fde254)
+      labels:
+        io.kompose.network/ride-sharing-default: "true"
+        io.kompose.service: user-service
+    spec:
+      containers:
+        - env:
+            - name: DB_CONNECTION
+              value: "mongodb://mongodb/userService"
+            - name: NODE_ENV
+              value: "production"
+            - name: JWT_SECRET
+              value: "9a3f5dbdfb1855550344bb0525b7f3da6052be826bb8adf3487f592da32d2f4016cf7d14eeb0e970fae6b3a9861916ae0d60822c93d43b8d2064f2a6654c6c88"
+          image: gcr.io/ride-sharing-app-419819/ride-sharing-user-service:latest
+          name: user-service
+          ports:
+            - containerPort: 3001
+              protocol: TCP
+      restartPolicy: Always

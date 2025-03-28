@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.prod.yml
+    kompose.version: 1.32.0 (765fde254)
+  labels:
+    io.kompose.service: frontend
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: frontend
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.prod.yml
+        kompose.version: 1.32.0 (765fde254)
+      labels:
+        io.kompose.network/ride-sharing-default: "true"
+        io.kompose.service: frontend
+    spec:
+      containers:
+        - env:
+            - name: NODE_ENV
+              value: production
+            - name: REACT_APP_USER_SERVICE_URL
+              value: "http://user-service:3001"
+            - name: REACT_APP_TRIP_SERVICE_URL
+              value: "http://trip-service:3002"
+          image: gcr.io/ride-sharing-app-419819/ride-sharing-frontend:externalIp
+          name: frontend
+          ports:
+            - containerPort: 80
+              protocol: TCP
+      restartPolicy: Always

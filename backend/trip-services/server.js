@@ -9,10 +9,12 @@ app.use(cors());
 app.use(express.json());
 
 // Load environment variables
-const result = dotenv.config();
-if (result.error) {
-  console.error('Error loading environment variables:', result.error);
-  process.exit(1); // Exit process on environment variable loading failure
+if(process.env.NODE_ENV === 'development'||process.env.NODE_ENV === 'test') {
+  const result = dotenv.config();
+  if (result.error) {
+    console.error('Error loading environment variables:', result.error);
+    process.exit(1); // Exit process on environment variable loading failure
+  }
 }
 
 // Database connection
@@ -37,7 +39,7 @@ app.use((err, req, res, next) => {
 
 // Start the server if not in test mode
 if(process.env.NODE_ENV !== 'test'){
-  const port = process.env.PORT || 3002; // Consider using a different port from the user service
+  const port = process.env.PORT || 3002; 
   const server = app.listen(port, () => console.log(`Trip Microservice listening on port ${port}!`));
 
   // Graceful shutdown
